@@ -16,15 +16,15 @@ const DonutChart: React.FC<DonutChartProps> = ({ investedAmount, estimatedReturn
   const COLORS = ['#e0e7ff', '#6366f1'];
 
   return (
-    <div className="h-60 w-full animate-scale-in">
+    <div className="h-80 w-full animate-scale-in">
       <ResponsiveContainer width="100%" height="100%">
         <PieChart>
           <Pie
             data={data}
             cx="50%"
             cy="50%"
-            innerRadius={60}
-            outerRadius={80}
+            innerRadius={80}
+            outerRadius={100}
             fill="#8884d8"
             paddingAngle={0}
             dataKey="value"
