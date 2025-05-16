@@ -59,11 +59,18 @@ const BarChart: React.FC<BarChartProps> = ({ data }) => {
     return null;
   };
 
+  // Add a key prop to force re-render when data changes
+  const chartKey = React.useMemo(() => {
+    // Create a unique key based on the data to force re-render
+    return JSON.stringify(data.map(item => item.investedTillDate + item.estimatedValueTillDate));
+  }, [data]);
+
   return (
     <div className="h-64 w-full mt-8 animate-fade-in">
       <h3 className="text-lg font-medium mb-4 text-sip-heading">Growth Over Time</h3>
       <ResponsiveContainer width="100%" height="100%">
         <RechartsBarChart
+          key={chartKey}
           data={data}
           margin={{
             top: 5,

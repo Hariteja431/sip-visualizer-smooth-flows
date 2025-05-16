@@ -24,14 +24,15 @@ const SIPCalculator = () => {
     }>
   });
 
+  // Recalculate whenever any input parameter changes
   useEffect(() => {
+    let result;
     if (calculationType === 'sip') {
-      const result = calculateSIP(monthlyInvestment, expectedReturn, timePeriod);
-      setResults(result);
+      result = calculateSIP(monthlyInvestment, expectedReturn, timePeriod);
     } else {
-      const result = calculateLumpsum(lumpsumAmount, expectedReturn, timePeriod);
-      setResults(result);
+      result = calculateLumpsum(lumpsumAmount, expectedReturn, timePeriod);
     }
+    setResults(result);
   }, [calculationType, monthlyInvestment, lumpsumAmount, expectedReturn, timePeriod]);
 
   return (
