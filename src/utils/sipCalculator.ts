@@ -59,6 +59,55 @@ export const calculateSIP = (
 };
 
 /**
+ * Calculate Lumpsum investment returns
+ * 
+ * @param principalAmount - Initial lumpsum investment amount
+ * @param annualReturnRate - Expected annual return rate (in percentage)
+ * @param years - Investment time period in years
+ * @returns Object containing invested amount, estimated returns and total value
+ */
+export const calculateLumpsum = (
+  principalAmount: number,
+  annualReturnRate: number,
+  years: number
+): {
+  investedAmount: number;
+  estimatedReturns: number;
+  totalValue: number;
+  yearlyData: Array<{
+    year: number;
+    investedTillDate: number;
+    estimatedValueTillDate: number;
+  }>;
+} => {
+  const rate = annualReturnRate / 100;
+  
+  // Calculate total value using compound interest formula: P(1 + r)^n
+  const totalValue = principalAmount * Math.pow(1 + rate, years);
+  const estimatedReturns = totalValue - principalAmount;
+
+  // Calculate yearly data for the bar chart
+  const yearlyData = [];
+  
+  for (let year = 1; year <= years; year++) {
+    const estimatedValueTillDate = principalAmount * Math.pow(1 + rate, year);
+    
+    yearlyData.push({
+      year,
+      investedTillDate: principalAmount, // In lumpsum, invested amount remains the same over time
+      estimatedValueTillDate
+    });
+  }
+
+  return {
+    investedAmount: principalAmount,
+    estimatedReturns,
+    totalValue,
+    yearlyData
+  };
+};
+
+/**
  * Format currency amount to Indian Rupee format
  * 
  * @param amount - Amount to format

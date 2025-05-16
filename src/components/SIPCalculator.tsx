@@ -5,10 +5,12 @@ import InputSlider from './InputSlider';
 import DonutChart from './DonutChart';
 import BarChart from './BarChart';
 import ResultSummary from './ResultSummary';
-import { calculateSIP } from '@/utils/sipCalculator';
+import { calculateSIP, calculateLumpsum } from '@/utils/sipCalculator';
 
 const SIPCalculator = () => {
+  const [calculationType, setCalculationType] = useState<'sip' | 'lumpsum'>('sip');
   const [monthlyInvestment, setMonthlyInvestment] = useState(25000);
+  const [lumpsumAmount, setLumpsumAmount] = useState(1000000);
   const [expectedReturn, setExpectedReturn] = useState(12);
   const [timePeriod, setTimePeriod] = useState(10);
   const [results, setResults] = useState({
@@ -23,9 +25,14 @@ const SIPCalculator = () => {
   });
 
   useEffect(() => {
-    const result = calculateSIP(monthlyInvestment, expectedReturn, timePeriod);
-    setResults(result);
-  }, [monthlyInvestment, expectedReturn, timePeriod]);
+    if (calculationType === 'sip') {
+      const result = calculateSIP(monthlyInvestment, expectedReturn, timePeriod);
+      setResults(result);
+    } else {
+      const result = calculateLumpsum(lumpsumAmount, expectedReturn, timePeriod);
+      setResults(result);
+    }
+  }, [calculationType, monthlyInvestment, lumpsumAmount, expectedReturn, timePeriod]);
 
   return (
     <div className="max-w-5xl mx-auto px-4">
@@ -34,19 +41,41 @@ const SIPCalculator = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             <div className="space-y-4">
               <div className="flex items-center gap-2 mb-6">
-                <div className="bg-sip-light text-sip-dark font-bold text-sm px-4 py-1 rounded-full">SIP</div>
-                <h2 className="text-xl text-gray-600">Lumpsum</h2>
+                <button 
+                  className={`${calculationType === 'sip' ? 'bg-sip-light text-sip-dark' : 'bg-white text-gray-600'} font-bold text-sm px-4 py-1 rounded-full transition-colors`}
+                  onClick={() => setCalculationType('sip')}
+                >
+                  SIP
+                </button>
+                <button 
+                  className={`${calculationType === 'lumpsum' ? 'bg-sip-light text-sip-dark' : 'bg-white text-gray-600'} font-bold text-sm px-4 py-1 rounded-full transition-colors`}
+                  onClick={() => setCalculationType('lumpsum')}
+                >
+                  Lumpsum
+                </button>
               </div>
 
-              <InputSlider
-                label="Monthly investment"
-                value={monthlyInvestment}
-                onChange={(values) => setMonthlyInvestment(values[0])}
-                min={1000}
-                max={100000}
-                step={500}
-                valuePrefix="₹"
-              />
+              {calculationType === 'sip' ? (
+                <InputSlider
+                  label="Monthly investment"
+                  value={monthlyInvestment}
+                  onChange={(values) => setMonthlyInvestment(values[0])}
+                  min={1000}
+                  max={100000}
+                  step={500}
+                  valuePrefix="₹"
+                />
+              ) : (
+                <InputSlider
+                  label="Lumpsum amount"
+                  value={lumpsumAmount}
+                  onChange={(values) => setLumpsumAmount(values[0])}
+                  min={10000}
+                  max={10000000}
+                  step={10000}
+                  valuePrefix="₹"
+                />
+              )}
 
               <InputSlider
                 label="Expected return rate (p.a)"

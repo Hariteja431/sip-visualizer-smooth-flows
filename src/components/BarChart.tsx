@@ -22,13 +22,13 @@ interface BarChartProps {
 }
 
 const BarChart: React.FC<BarChartProps> = ({ data }) => {
-  const formatYAxisTick = (value: number) => {
+  const formatYAxisTick = (value: any): string => {
     if (value >= 1000000) {
       return `${(value / 1000000).toFixed(0)}M`;
     } else if (value >= 1000) {
       return `${(value / 1000).toFixed(0)}K`;
     }
-    return value;
+    return value.toString();
   };
 
   const formatTooltipValue = (value: number) => {
