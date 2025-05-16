@@ -18,7 +18,7 @@ const DonutChart: React.FC<DonutChartProps> = ({ investedAmount, estimatedReturn
   return (
     <div className="h-80 w-full animate-scale-in">
       <ResponsiveContainer width="100%" height="100%">
-        <PieChart>
+        <PieChart width={400}>
           <Pie
             data={data}
             cx="50%"
