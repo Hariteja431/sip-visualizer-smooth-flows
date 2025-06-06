@@ -1,6 +1,8 @@
 
 import React from 'react';
 import { formatCurrency } from '@/utils/sipCalculator';
+import { TrendingUp, Banknote, Target } from 'lucide-react';
+import { Card, CardContent } from "@/components/ui/card";
 
 interface ResultSummaryProps {
   investedAmount: number;
@@ -14,22 +16,53 @@ const ResultSummary: React.FC<ResultSummaryProps> = ({
   totalValue
 }) => {
   return (
-    <div className="mt-6 bg-white rounded-lg p-6 border border-gray-200 shadow-sm animate-scale-in">
-      <div className="space-y-4">
-        <div className="flex justify-between items-center">
-          <span className="text-gray-600">Invested amount</span>
-          <span className="text-lg font-medium">{formatCurrency(investedAmount)}</span>
+    <Card className="shadow-xl border-0 bg-white/80 backdrop-blur-sm h-full">
+      <CardContent className="p-8">
+        <h3 className="text-xl font-semibold text-gray-800 mb-8 text-center">
+          Investment Summary
+        </h3>
+        
+        <div className="space-y-6">
+          <div className="flex items-center justify-between p-4 bg-blue-50 rounded-xl border border-blue-100">
+            <div className="flex items-center space-x-3">
+              <div className="bg-blue-500 p-3 rounded-full">
+                <Banknote className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <p className="text-gray-600 font-medium">Invested Amount</p>
+                <p className="text-xl font-bold text-gray-800">{formatCurrency(investedAmount)}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between p-4 bg-green-50 rounded-xl border border-green-100">
+            <div className="flex items-center space-x-3">
+              <div className="bg-green-500 p-3 rounded-full">
+                <TrendingUp className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <p className="text-gray-600 font-medium">Estimated Returns</p>
+                <p className="text-xl font-bold text-green-600">{formatCurrency(estimatedReturns)}</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between p-5 bg-gradient-to-r from-purple-50 to-indigo-50 rounded-xl border border-purple-200">
+            <div className="flex items-center space-x-3">
+              <div className="bg-gradient-to-r from-purple-500 to-indigo-500 p-3 rounded-full">
+                <Target className="h-6 w-6 text-white" />
+              </div>
+              <div>
+                <p className="text-gray-600 font-medium">Total Value</p>
+                <p className="text-2xl font-bold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
+                  {formatCurrency(totalValue)}
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="text-gray-600">Est. returns</span>
-          <span className="text-lg font-medium text-sip-secondary">{formatCurrency(estimatedReturns)}</span>
-        </div>
-        <div className="flex justify-between items-center border-t border-gray-200 pt-4">
-          <span className="text-gray-800 font-medium">Total value</span>
-          <span className="text-xl font-bold">{formatCurrency(totalValue)}</span>
-        </div>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 };
 
